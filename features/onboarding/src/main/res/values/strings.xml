@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="onboarding_1_title">Autenticazione della patente di guida</string>
+    <string name="onboarding_1_text">Effettua la <b>verifica di autenticità</b> della <b>patente di guida</b> mostrata tramite IT Wallet.</string>
+
+    <string name="onboarding_2_title">Verifica in prossimità</string>
+    <string name="onboarding_2_text">Verifica tramite <b>Bluetooth</b>, <b>anche in assenza</b> di <b>connessione internet</b>.</string>
+
+    <string name="onboarding_3_title">Visualizza Risultato</string>
+    <string name="onboarding_3_text">Ricevi l\'<b>esito</b> della verifica in tempo reale e visualizza i <b>dati della patente di guida</b>.</string>
+
+    <string name="onboarding_forward">Salta</string>
+    <string name="onboarding_backward">Indietro</string>
+
+    <string name="onboarding_button">Prosegui</string>
+
+</resources>

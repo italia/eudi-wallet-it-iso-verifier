@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="debug_detail_success">Success</string>
+    <string name="debug_detail_fail">Fail</string>
+    <string name="debug_detail_qr">Qr Code per engagement:</string>
+    <string name="debug_detail_requested">Dati richiesti:</string>
+    <string name="debug_detail_received">Dati ricevuti:</string>
+    <string name="debug_detail_errors">Errori:</string>
+
+</resources>

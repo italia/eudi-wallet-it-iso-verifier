@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="home_title">Inizia la verifica</string>
+    <string name="home_description"> Avviando la verifica potrai scansionare il <b>QR Code</b> mostrato su IT Wallet</string>
+    <string name="home_button">Avvia verifica</string>
+
+</resources>

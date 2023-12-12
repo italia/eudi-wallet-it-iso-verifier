@@ -1,0 +1,19 @@
+<resources>
+
+    <string name="app_name">IT-Wallet-Verifica</string>
+
+    <string name="title_home_template">Verifica %s</string>
+    <string name="title_home_end">Patente</string>
+    <string name="title_settings">Impostazioni</string>
+    <string name="title_details">Dettagli patente</string>
+    <string name="title_debug">Debug</string>
+
+    <string name="permissions_rationale_title">Permessi necessari</string>
+    <string name="permissions_rationale_description">I permessi per usare la fotocamera e il bluethoot sono necessari per il corretto funzionamento dell\'app. Per favore, approvali entrambi.</string>
+    <string name="permissions_rationale_button">Approva i permessi</string>
+
+    <string name="permissions_denied_title">Permessi negati</string>
+    <string name="permissions_denied_description">Hai negato i permessi necessari per il funzionamento dell\'app. Se hai cambiato idea, clicca sul pulsante sotto, che aprirà le impostazioni dell\'app, consentendoti di approvarli manualmente.</string>
+    <string name="permissions_denied_button">Vai alle impostazioni</string>
+
+</resources>

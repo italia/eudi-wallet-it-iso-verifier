@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="debug_dialog_placeholder">No name</string>
+    <string name="debug_dialog_positive">Salva</string>
+    <string name="debug_dialog_negative">Indietro</string>
+    <string name="debug_dialog_title">Nome log</string>
+    <string name="debug_dialog_description">Dai un nome a questa scansione, in modo da trovarla facilmente nel menu di debug</string>
+
+    <string name="scan_title">Scansiona il Qr Code</string>
+    <string name="scan_description">Inquadra e scansiona il <b>QR Code</b> mostrato su IT Wallet</string>
+
+    <string name="validation_title">Validazione in corso</string>
+    <string name="validation_description">Attendi qualche secondo…</string>
+
+    <string name="drive_license_title">Licenza di Guida</string>
+    <string name="drive_license_exp">Valida fino al %s</string>
+    <string name="drive_license_label_number">Numero patente</string>
+    <string name="drive_license_label_release_date">Data rilascio</string>
+    <string name="drive_license_label_expiration_date">Data scadenza</string>
+    <string name="drive_license_button_details">Visualizza dettagli</string>
+    <string name="drive_license_button_close">Chiudi verifica</string>
+
+    <string name="verification_result_valid">Patente valida</string>
+    <string name="verification_result_not_valid">Patente non valida</string>
+    <string name="verification_result_not_verified">Verifica non effettuata</string>
+    <string name="verification_result_expired">Patente scaduta</string>
+
+    <string name="detail_personal_title">Dati personali</string>
+    <string name="detail_personal_name_label">Nome</string>
+    <string name="detail_personal_surname_label">Cognome</string>
+    <string name="detail_personal_birthdate_label">Data di nascita</string>
+    <string name="detail_personal_place_label">Luogo di nascita</string>
+
+    <string name="detail_licenses_title">License attive</string>
+    <string name="detail_licenses_label">Tipologia licensa</string>
+    <string name="detail_licenses_button">Mostra</string>
+
+    <string name="detail_button_picture">Mostra fotografia</string>
+
+    <string name="detail_data_title">Dati tessera</string>
+    <string name="detail_data_status_label">Status</string>
+    <string name="detail_data_release_date_label">Data del rilascio</string>
+    <string name="detail_data_expiration_date_label">Scadenza</string>
+    <string name="detail_data_number_label">Numero della patente</string>
+    <string name="detail_data_codes_label">Codici</string>
+    <string name="detail_data_released_by_label">Rilasciata da</string>
+    <string name="detail_data_emission_label">Emessa da</string>
+    <string name="detail_data_additional_info_label">Altre informazioni su questi dati</string>
+
+    <string name="detail_status_active">ATTIVA</string>
+    <string name="detail_status_error">CONTIENE ERRORI</string>
+
+    <string name="picture_title">Foto patente di</string>
+    <string name="picture_button_positive">Chiudi</string>
+
+    <string name="error_title">Errore di collegamento</string>
+    <string name="error_text">Impossibile stabilire la <b>connessione Bluetooth</b> tra i dispositivi.</string>
+    <string name="error_description">Verifica che entrambi i dispositivi siano <b>accesi</b> e nelle <b>vicinanze</b>. Assicurati che il <b>Bluetooth</b> sia <b>abilitato</b> su entrambi i dispositivi.</string>
+    <string name="error_button">Riprova</string>
+
+</resources>

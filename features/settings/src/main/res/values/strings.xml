@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_privacy">Privacy</string>
+    <string name="settings_security">Sicurezza</string>
+    <string name="settings_info">Informazioni</string>
+    <string name="settings_tutorial">Tutorial</string>
+</resources>
