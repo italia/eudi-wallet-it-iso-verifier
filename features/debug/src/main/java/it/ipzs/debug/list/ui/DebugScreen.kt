@@ -23,16 +23,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import it.simonecascino.destinationbuilder.annotations.Destination
 import it.ipzs.debug.list.data.models.LogUI
 import it.ipzs.theme.specs.ThemeSpecs
 
-@Destination(
-    graphName = "DebugGraph"
-)
 @Composable
 fun DebugScreen(
     modifier: Modifier = Modifier,

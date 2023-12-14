@@ -11,14 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.google.mlkit.vision.barcode.common.Barcode
-import it.simonecascino.destinationbuilder.annotations.Destination
 import it.ipzs.scan.R
 import it.ipzs.theme.specs.ThemeSpecs
 import it.ipzs.utils.resourceToAnnotatedString
 
-@Destination(
-    graphName = "ScanFlowGraph"
-)
 @Composable
 fun ScanScreen(
     modifier: Modifier = Modifier,

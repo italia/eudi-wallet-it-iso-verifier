@@ -15,7 +15,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import it.simonecascino.destinationbuilder.annotations.Destination
 import it.ipzs.scan.R
 import it.ipzs.scan.drivelicense.data.model.DriveLicenseUI
 import it.ipzs.scan.drivelicense.data.model.VerificationSpecs
@@ -26,9 +25,6 @@ import it.ipzs.utils.toPx
 
 private val extendedAreaHeight = 150.dp
 
-@Destination(
-    graphName = "ScanFlowGraph"
-)
 @Composable
 fun DriveLicenseScreen(
     modifier: Modifier = Modifier,

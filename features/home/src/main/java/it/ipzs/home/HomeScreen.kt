@@ -20,11 +20,7 @@ import it.ipzs.theme.AppTheme
 import it.ipzs.theme.component.AppButton
 import it.ipzs.theme.specs.ThemeSpecs
 import it.ipzs.utils.resourceToAnnotatedString
-import it.simonecascino.destinationbuilder.annotations.Destination
 
-@Destination(
-    graphName = "HomeGraph"
-)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,

@@ -12,16 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import it.simonecascino.destinationbuilder.annotations.Destination
 import it.ipzs.scan.R
 import it.ipzs.scan_data.model.VerificationResult
 import it.ipzs.theme.component.AppButton
 import it.ipzs.theme.component.ButtonType
 import it.ipzs.theme.specs.ThemeSpecs
 
-@Destination(
-    graphName = "ScanFlowGraph"
-)
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,

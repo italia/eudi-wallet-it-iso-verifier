@@ -19,7 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep public class * extends it.simonecascino.destinationbuilder.base.BaseDestination
 -dontwarn com.fasterxml.jackson.dataformat.xml.JacksonXmlModule
 -dontwarn com.fasterxml.jackson.dataformat.xml.XmlMapper
 -dontwarn com.sun.org.apache.xml.internal.utils.PrefixResolver

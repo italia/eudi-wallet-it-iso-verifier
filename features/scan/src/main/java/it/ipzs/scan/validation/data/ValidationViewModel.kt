@@ -3,9 +3,9 @@ package it.ipzs.scan.validation.data
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.simonecascino.destination.ScanFlowGraph
 import it.ipzs.architecture.viewmodel.BaseViewModel
 import it.ipzs.architecture.viewmodel.NoState
+import it.ipzs.scan.ScanFlowGraph.ValidationScreen
 import it.ipzs.scan_data.ScanRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,8 +19,8 @@ class ValidationViewModel @Inject constructor(
     init {
 
         val barcode = savedStateHandle.get<String>(
-            ScanFlowGraph.ValidationScreen.KEY_BARCODE
-        ) ?: throw IllegalStateException("SavedStateHandle must have a valid value for the key ${ScanFlowGraph.ValidationScreen.KEY_BARCODE}")
+            ValidationScreen.KEY_BARCODE
+        ) ?: throw IllegalStateException("SavedStateHandle must have a valid value for the key ${ValidationScreen.KEY_BARCODE}")
 
         viewModelScope.launch {
             scanRepository.setQrDeviceEngagement(

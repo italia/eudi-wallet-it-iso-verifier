@@ -20,8 +20,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import it.ipzs.scan.R
-import it.simonecascino.destination.ScanFlowGraph
 import it.ipzs.architecture.injection.composableVM
 import it.ipzs.architecture.injection.dialogVM
 import it.ipzs.architecture.viewmodel.NoEvents
@@ -46,8 +44,90 @@ import it.ipzs.scan.validation.ui.ValidationScreen
 import it.ipzs.theme.component.AppDialog
 import it.ipzs.theme.component.ButtonsSpecs
 import it.ipzs.theme.specs.ThemeSpecs
+import it.ipzs.utils.BaseDestination
 import it.ipzs.utils.navigateAndPop
 import it.ipzs.utils.resourceToAnnotatedString
+
+sealed class ScanFlowGraph(
+    paths: Array<out String>,
+    queryParams: Array<out String>,
+    dynamicTitle: Boolean,
+) : BaseDestination(paths, queryParams, dynamicTitle) {
+    companion object {
+        val graphRoute: String = "scanflowgraph"
+
+        fun fromPath(path: String): BaseDestination? {
+            val name = if(path.contains("/")) {
+                path.split("/").first()
+            }
+            else if (path.contains("?")) {
+                path.split("?").first()
+            }
+            else path
+            return when(name){
+                "DetailScreen" -> DetailScreen
+                "DriveLicenseScreen" -> DriveLicenseScreen
+                "ErrorScreen" -> ErrorScreen
+                "PictureDialog" -> PictureDialog
+                "ScanScreen" -> ScanScreen
+                "ValidationScreen" -> ValidationScreen
+                else -> null
+            }
+        }
+    }
+
+    object DetailScreen : ScanFlowGraph(arrayOf(), arrayOf(), false) {
+        fun buildPath(): String {
+            val pathMap = mutableMapOf<String, String>()
+            val queryMap = mutableMapOf<String, String?>()
+            return super.buildPath(pathMap, queryMap)
+        }
+    }
+
+    object DriveLicenseScreen : ScanFlowGraph(arrayOf(), arrayOf(), false) {
+        fun buildPath(): String {
+            val pathMap = mutableMapOf<String, String>()
+            val queryMap = mutableMapOf<String, String?>()
+            return super.buildPath(pathMap, queryMap)
+        }
+    }
+
+    object ErrorScreen : ScanFlowGraph(arrayOf(), arrayOf(), false) {
+        fun buildPath(): String {
+            val pathMap = mutableMapOf<String, String>()
+            val queryMap = mutableMapOf<String, String?>()
+            return super.buildPath(pathMap, queryMap)
+        }
+    }
+
+    object PictureDialog : ScanFlowGraph(arrayOf(), arrayOf(), false) {
+        fun buildPath(): String {
+            val pathMap = mutableMapOf<String, String>()
+            val queryMap = mutableMapOf<String, String?>()
+            return super.buildPath(pathMap, queryMap)
+        }
+    }
+
+    object ScanScreen : ScanFlowGraph(arrayOf(), arrayOf(), false) {
+        fun buildPath(): String {
+            val pathMap = mutableMapOf<String, String>()
+            val queryMap = mutableMapOf<String, String?>()
+            return super.buildPath(pathMap, queryMap)
+        }
+    }
+
+    object ValidationScreen : ScanFlowGraph(arrayOf("barcode"), arrayOf(), false) {
+        public const val KEY_BARCODE: String = "barcode"
+
+        fun buildPath(barcode: String): String {
+            val pathMap = mutableMapOf<String, String>()
+            val queryMap = mutableMapOf<String, String?>()
+            pathMap["barcode"] = barcode
+            return super.buildPath(pathMap, queryMap)
+        }
+    }
+}
+
 
 fun NavGraphBuilder.scanGraph(
     navController: NavHostController,

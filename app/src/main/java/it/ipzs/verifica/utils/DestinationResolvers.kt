@@ -6,13 +6,13 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import it.simonecascino.destination.DebugGraph
-import it.simonecascino.destination.HomeGraph
-import it.simonecascino.destination.ScanFlowGraph
-import it.simonecascino.destination.SettingsGraph
-import it.simonecascino.destinationbuilder.base.BaseDestination
+import it.ipzs.debug.DebugGraph
+import it.ipzs.home.HomeGraph
+import it.ipzs.scan.ScanFlowGraph
+import it.ipzs.settings.SettingsGraph
 import it.ipzs.verifica.R
 import it.ipzs.theme.component.AppBarSpecs
+import it.ipzs.utils.BaseDestination
 
 object DestinationResolver {
 

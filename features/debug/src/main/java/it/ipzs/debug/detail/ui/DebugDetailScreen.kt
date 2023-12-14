@@ -22,14 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import it.ipzs.debug.R
-import it.simonecascino.destinationbuilder.annotations.Destination
 import it.ipzs.theme.specs.ThemeSpecs
 
-@Destination(
-    paths = ["itemId"],
-    graphName = "DebugGraph",
-    dynamicTitle = true
-)
 @Composable
 fun DebugDetailScreen(
     modifier: Modifier = Modifier,

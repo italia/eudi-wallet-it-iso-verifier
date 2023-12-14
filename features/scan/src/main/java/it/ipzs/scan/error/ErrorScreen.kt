@@ -16,16 +16,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import it.simonecascino.destinationbuilder.annotations.Destination
 import it.ipzs.scan.R
 import it.ipzs.theme.AppTheme
 import it.ipzs.theme.component.AppButton
 import it.ipzs.theme.specs.ThemeSpecs
 import it.ipzs.utils.resourceToAnnotatedString
 
-@Destination(
-    graphName = "ScanFlowGraph"
-)
 @Composable
 fun ErrorScreen(
     modifier: Modifier = Modifier,

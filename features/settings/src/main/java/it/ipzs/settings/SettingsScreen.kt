@@ -22,9 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import it.ipzs.theme.AppTheme
 import it.ipzs.theme.R
 import it.ipzs.theme.specs.ThemeSpecs
-import it.simonecascino.destinationbuilder.annotations.Destination
 
-@Destination(graphName = "SettingsGraph")
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,

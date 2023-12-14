@@ -43,18 +43,6 @@ import java.util.concurrent.Executors
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private val authValues = listOf(
-    "0",
-    "SECP256R1",
-    "SECP384R1",
-    "SECP521R1",
-    "BRAINPOOLP256R1",
-    "BRAINPOOLP384R1",
-    "BRAINPOOLP512R1",
-    "ED25519",
-    "ED448"
-)
-
 @Singleton
 class TransferManager @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -63,13 +51,11 @@ class TransferManager @Inject constructor(
 
     val canSetName = logManager.canSetName()
 
-    //currently we are getting the first
-    private val authName = authValues.first()
+    private val authName = SupportedCurves.SECP256R1.name
 
     private var mdocConnectionMethod: ConnectionMethod? = null
 
     private var hasStarted = false
-
 
     var responseBytes: ByteArray? = null
         private set

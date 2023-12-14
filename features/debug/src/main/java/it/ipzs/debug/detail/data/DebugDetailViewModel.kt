@@ -3,9 +3,9 @@ package it.ipzs.debug.detail.data
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import it.simonecascino.destination.DebugGraph
 import it.ipzs.architecture.viewmodel.BaseViewModel
 import it.ipzs.architecture.viewmodel.NoEvents
+import it.ipzs.debug.DebugGraph
 import it.ipzs.debug.detail.data.models.LogDetailUI
 import it.ipzs.debug_data.DebugRepository
 import kotlinx.coroutines.launch

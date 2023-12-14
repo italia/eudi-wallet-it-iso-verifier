@@ -10,8 +10,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import it.simonecascino.destination.OnboardingGraph
-import it.simonecascino.destination.SettingsGraph
+import it.ipzs.onboarding.OnboardingGraph
+import it.ipzs.settings.SettingsGraph
 import it.ipzs.verifica.data.MainState
 import it.ipzs.verifica.utils.DestinationResolver
 import it.ipzs.preferences.DatastorePrefResult

@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import it.ipzs.onboarding.R
-import it.simonecascino.destinationbuilder.annotations.Destination
 import it.ipzs.theme.AppTheme
 import it.ipzs.theme.component.AppButton
 import it.ipzs.theme.component.AppButtonDefaults
@@ -47,9 +46,6 @@ private val pages = listOf(
     ),
 )
 
-@Destination(
-    graphName = "OnboardingGraph"
-)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(
