@@ -56,6 +56,14 @@ class ScanRepository @Inject constructor(
                         TransferStatus.DISCONNECTED -> {
                             if (!transferManager.hasDocuments())
                                 onError()
+                            else {
+                                val result = transferManager.parseResult()
+                                lastDriveLicenseScanned = result
+                                if(lastDriveLicenseScanned != null){
+                                    transferManager.stopVerification(true, true)
+                                    onDocumentReceived()
+                                }
+                            }
                         }
                         TransferStatus.ERROR -> {
 
