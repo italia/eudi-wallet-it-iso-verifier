@@ -1,12 +1,18 @@
 package it.ipzs.scan_data
 
 import android.util.Log
-import it.ipzs.scan_data.model.DriveLicenseData
 import it.ipzs.scan_data.managers.TransferManager
+import it.ipzs.scan_data.model.DriveLicenseData
 import it.ipzs.scan_data.utils.TransferStatus
 import it.ipzs.utils.DoNothing
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.seconds
 
 @Singleton
 class ScanRepository @Inject constructor(
@@ -17,79 +23,61 @@ class ScanRepository @Inject constructor(
 
     var lastDriveLicenseScanned: DriveLicenseData? = null
 
+    private var timerJob: Job? = null
+
     suspend fun setQrDeviceEngagement(
         qr: String,
         onDocumentReceived: () -> Unit,
         onError: () -> Unit
     ){
-
+        transferManager.stopVerification()
         transferManager.setQrDeviceEngagement(qr)
 
-        try{
-            transferManager
-                .getTransferStatus()
-                .collect{
+        withContext(Dispatchers.IO){
 
-                    Log.d("test_status", it.name)
+            timerJob = launch {
+                delay(2.seconds)
+                transferManager.stopVerification()
+                onError()
+            }
 
-                    when(it){
-                        TransferStatus.READER_ENGAGEMENT_READY -> {
+            launch {
 
-                        }
-                        TransferStatus.ENGAGED -> {
-                            transferManager.connect()
-                        }
-                        TransferStatus.CONNECTED -> {
-                            transferManager.sendRequest()
-                        }
-                        TransferStatus.RESPONSE -> {
+                transferManager
+                    .getTransferStatus()
+                    .collect{
 
-                            val result = transferManager.parseResult()
+                        Log.d("test_status", it.name)
 
-                            lastDriveLicenseScanned = result
+                        when(it){
+                            TransferStatus.IDLE,
+                            TransferStatus.READER_ENGAGEMENT_READY -> DoNothing
 
-                            if(lastDriveLicenseScanned != null){
-                                transferManager.stopVerification(true, true)
-                                onDocumentReceived()
+                            TransferStatus.ENGAGED -> {
+                                transferManager.connect()
                             }
-                        }
-                        TransferStatus.DISCONNECTED -> {
-                            if (!transferManager.hasDocuments())
-                                onError()
-                            else {
-                                val result = transferManager.parseResult()
-                                lastDriveLicenseScanned = result
-                                if(lastDriveLicenseScanned != null){
-                                    transferManager.stopVerification(true, true)
+
+                            TransferStatus.CONNECTED -> {
+                                transferManager.sendRequest()
+                            }
+
+                            TransferStatus.TERMINATED -> {
+
+                                transferManager.parseResult()?.let {
+                                    lastDriveLicenseScanned = it
                                     onDocumentReceived()
-                                }
+                                } ?: onError()
+
+                                transferManager.stopVerification()
+                                timerJob?.cancel()
                             }
                         }
-                        TransferStatus.ERROR -> {
 
-                            try{
-
-                                val result = transferManager.parseResult()
-
-                                lastDriveLicenseScanned = result
-
-                                if(lastDriveLicenseScanned != null){
-                                    transferManager.stopVerification(true, true)
-                                    onDocumentReceived()
-                                } else onError()
-
-                            } catch (e: Exception){
-                                e.printStackTrace()
-                                onError()
-                            }
-
-                        }
-                        TransferStatus.IDLE -> DoNothing
                     }
-                }
 
-        } finally {
-            transferManager.stopVerification(true, true)
+
+            }
+
         }
 
     }

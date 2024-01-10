@@ -59,6 +59,7 @@ class TransferManager @Inject constructor(
 
     var responseBytes: ByteArray? = null
         private set
+
     private var verification: VerificationHelper? = null
 
 
@@ -117,14 +118,11 @@ class TransferManager @Inject constructor(
         }
     }
 
-    fun stopVerification(
-        sendSessionTerminationMessage: Boolean,
-        useTransportSpecificSessionTermination: Boolean
-    ) {
+    fun stopVerification() {
 
-        verification?.setSendSessionTerminationMessage(sendSessionTerminationMessage)
+        verification?.setSendSessionTerminationMessage(true)
         try {
-            if (verification?.isTransportSpecificTerminationSupported == true && useTransportSpecificSessionTermination) {
+            if (verification?.isTransportSpecificTerminationSupported == true) {
                 verification?.setUseTransportSpecificSessionTermination(true)
             }
         } catch (e: IllegalStateException) {
@@ -175,17 +173,17 @@ class TransferManager @Inject constructor(
         override fun onResponseReceived(deviceResponseBytes: ByteArray) {
             logManager.logResponse()
             responseBytes = deviceResponseBytes
-            transferStatusLd.value = TransferStatus.RESPONSE
+            transferStatusLd.value = TransferStatus.TERMINATED
         }
 
         override fun onDeviceDisconnected(transportSpecificTermination: Boolean) {
             logManager.logDeviceDisconnected(transportSpecificTermination)
-            transferStatusLd.value = TransferStatus.DISCONNECTED
+            transferStatusLd.value = TransferStatus.TERMINATED
         }
 
         override fun onError(error: Throwable) {
             logManager.logError(error)
-            transferStatusLd.value = TransferStatus.ERROR
+            transferStatusLd.value = TransferStatus.TERMINATED
         }
     }
 
@@ -317,13 +315,6 @@ class TransferManager @Inject constructor(
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    fun hasDocuments() = try {
-        getDeviceResponse().documents.isNotEmpty()
-    } catch(e: Exception) {
-        logManager.logError(e)
-        false
-    }
 
     suspend fun parseResult(): DriveLicenseData? {
 
@@ -470,7 +461,6 @@ class TransferManager @Inject constructor(
 
             } catch (e: Exception){
                 logManager.logError(e)
-                transferStatusLd.value = TransferStatus.ERROR
                 null
             }
 

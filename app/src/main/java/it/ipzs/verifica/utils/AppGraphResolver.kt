@@ -5,7 +5,7 @@ import it.ipzs.home.HomeGraph
 import it.ipzs.onboarding.OnboardingGraph
 import it.ipzs.scan.ScanFlowGraph
 import it.ipzs.settings.SettingsGraph
-import it.ipzs.utils.BaseDestination
+import it.ipzs.utils.navigation.BaseDestination
 import kotlin.String
 
 object AppGraphResolver {

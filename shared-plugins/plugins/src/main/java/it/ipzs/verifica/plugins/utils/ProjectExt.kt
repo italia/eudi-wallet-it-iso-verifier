@@ -4,6 +4,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
+import java.util.regex.Pattern
 
 val Project.libs get() = rootProject
     .extensions
@@ -24,6 +25,17 @@ fun Project.getVersion(alias: String) = libs
     .findVersion(alias)
     .get()
     .toString()
+
+fun Project.getFlavorName() = run {
+    val pattern: Pattern = Pattern.compile("assemble(\\w+)(Release|Debug)")
+
+    val matcher = pattern.matcher(gradle.startParameter.taskRequests.toString())
+    if (matcher.find()) {
+        matcher.group(1).lowercase()
+    } else {
+        ""
+    }
+}
 
 fun Project.dependencies(
     vararg specs: Pair<DependencyConfiguration, String>

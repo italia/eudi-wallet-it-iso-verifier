@@ -1,4 +1,4 @@
-package it.ipzs.utils
+package it.ipzs.utils.navigation
 
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions

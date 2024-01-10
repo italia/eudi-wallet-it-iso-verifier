@@ -1,17 +1,13 @@
 package it.ipzs.onboarding
 
-import it.ipzs.utils.BaseDestination
-import kotlin.Array
-import kotlin.Boolean
-import kotlin.String
+import it.ipzs.utils.navigation.BaseDestination
 
 sealed class OnboardingGraph(
-  paths: Array<out String>,
-  queryParams: Array<out String>,
-  dynamicTitle: Boolean,
+  paths: List<String> = listOf(),
+  queryParams: List<String> = listOf(),
+  dynamicTitle: Boolean = false,
 ) : BaseDestination(paths, queryParams, dynamicTitle) {
   companion object {
-    val graphRoute: String = "onboardinggraph"
 
     fun fromPath(path: String): BaseDestination? {
       val name = if(path.contains("/")) {
@@ -28,11 +24,5 @@ sealed class OnboardingGraph(
     }
   }
 
-  object OnboardingScreen : OnboardingGraph(arrayOf(), arrayOf(), false) {
-    fun buildPath(): String {
-      val pathMap = mutableMapOf<String, String>()
-      val queryMap = mutableMapOf<String, String?>()
-      return super.buildPath(pathMap, queryMap)
-    }
-  }
+  data object OnboardingScreen : OnboardingGraph()
 }

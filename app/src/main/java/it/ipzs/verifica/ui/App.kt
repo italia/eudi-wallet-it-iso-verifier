@@ -30,7 +30,7 @@ import it.ipzs.verifica.data.MainViewModel
 import it.ipzs.verifica.data.PermissionScreensStatus
 import it.ipzs.verifica.utils.DestinationResolver
 import it.ipzs.theme.AppTheme
-import it.ipzs.utils.BaseDestination
+import it.ipzs.utils.navigation.BaseDestination
 import java.net.URLDecoder
 
 @OptIn(ExperimentalPermissionsApi::class)

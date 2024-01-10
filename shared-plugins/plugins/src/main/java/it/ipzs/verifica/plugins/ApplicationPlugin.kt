@@ -3,12 +3,14 @@ package it.ipzs.verifica.plugins
 import com.android.build.api.dsl.ApplicationExtension
 import it.ipzs.verifica.plugins.utils.DependencyConfiguration
 import it.ipzs.verifica.plugins.utils.dependencies
+import it.ipzs.verifica.plugins.utils.getFlavorName
 import it.ipzs.verifica.plugins.utils.getPluginId
 import it.ipzs.verifica.plugins.utils.kotlinOptions
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.currentBuildId
 
 private const val FLAVOR_DIMENSION = "product"
 private const val FLAVOR_PROD = "prod"
@@ -36,14 +38,17 @@ class ApplicationPlugin : Plugin<Project>{
                     applicationId = "it.ipzs.verifica"
                     minSdk = 26
                     targetSdk = 34
-                    versionCode = 3
-                    versionName = "1.3"
+                    versionCode = 5
+                    versionName = "1.5"
                     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
                 }
 
                 buildTypes {
                     release {
-                        isMinifyEnabled = true
+
+                        print("flavor is -> ${target.getFlavorName()}")
+
+                        isMinifyEnabled = target.getFlavorName() == FLAVOR_PROD
                         proguardFiles(
                             getDefaultProguardFile("proguard-android-optimize.txt"),
                             "proguard-rules.pro"

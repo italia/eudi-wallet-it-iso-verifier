@@ -11,15 +11,15 @@ import it.ipzs.debug.detail.ui.DebugDetailScreen
 import it.ipzs.debug.list.data.DebugState
 import it.ipzs.debug.list.data.DebugViewModel
 import it.ipzs.debug.list.ui.DebugScreen
-import it.ipzs.utils.BaseDestination
+import it.ipzs.utils.navigation.BaseDestination
 
 sealed class DebugGraph(
-    paths: Array<out String>,
-    queryParams: Array<out String>,
-    dynamicTitle: Boolean,
+    paths: List<String> = listOf(),
+    queryParams: List<String> = listOf(),
+    dynamicTitle: Boolean = false,
 ) : BaseDestination(paths, queryParams, dynamicTitle) {
     companion object {
-        val graphRoute: String = "debuggraph"
+        const val graphRoute: String = "debuggraph"
 
         fun fromPath(path: String): BaseDestination? {
             val name = if(path.contains("/")) {
@@ -37,25 +37,18 @@ sealed class DebugGraph(
         }
     }
 
-    object DebugDetailScreen : DebugGraph(arrayOf("itemId"), arrayOf(), true) {
+    data object DebugDetailScreen : DebugGraph(paths = listOf("itemId"), dynamicTitle = true) {
         const val KEY_ITEM_ID: String = "itemId"
 
         fun buildPath(androidAppTitle: String, itemId: String): String {
             val pathMap = mutableMapOf<String, String>()
-            val queryMap = mutableMapOf<String, String?>()
             pathMap["androidAppTitle"] = androidAppTitle
             pathMap["itemId"] = itemId
-            return super.buildPath(pathMap, queryMap)
+            return super.buildPath(pathMap, mapOf())
         }
     }
 
-    object DebugScreen : DebugGraph(arrayOf(), arrayOf(), false) {
-        fun buildPath(): String {
-            val pathMap = mutableMapOf<String, String>()
-            val queryMap = mutableMapOf<String, String?>()
-            return super.buildPath(pathMap, queryMap)
-        }
-    }
+    data object DebugScreen : DebugGraph()
 }
 
 fun NavGraphBuilder.debugGraph(

@@ -4,7 +4,7 @@ import java.io.Serializable
 
 abstract class RequestDocument : Serializable {
     abstract val docType: String
-    abstract val nameSpace: String
+    abstract val nameSpaces: List<String>
     abstract val dataItems: List<RequestDataItem>
 
     private var mapSelectedDataItem: Map<String, Boolean>? = null
@@ -21,13 +21,11 @@ abstract class RequestDocument : Serializable {
 
     open fun getItemsToRequest(): Map<String, Map<String, Boolean>> {
         mapSelectedDataItem?.let {
-
-            return mapOf(Pair(nameSpace, it))
+            return mapOf(Pair(nameSpaces[0], it))
         } ?: throw IllegalStateException("No data items selected for this request")
     }
 
     interface RequestDataItem {
         val identifier: String
-        val stringResourceId: Int
     }
 }

@@ -1,18 +1,13 @@
 package it.ipzs.settings
 
-import it.ipzs.utils.BaseDestination
-import kotlin.Array
-import kotlin.Boolean
-import kotlin.String
+import it.ipzs.utils.navigation.BaseDestination
 
 sealed class SettingsGraph(
-  paths: Array<out String>,
-  queryParams: Array<out String>,
-  dynamicTitle: Boolean,
+  paths: List<String> = listOf(),
+  queryParams: List<String> = listOf(),
+  dynamicTitle: Boolean = false,
 ) : BaseDestination(paths, queryParams, dynamicTitle) {
   companion object {
-    val graphRoute: String = "settingsgraph"
-
     fun fromPath(path: String): BaseDestination? {
       val name = if(path.contains("/")) {
         path.split("/").first()
@@ -28,11 +23,6 @@ sealed class SettingsGraph(
     }
   }
 
-  object SettingsScreen : SettingsGraph(arrayOf(), arrayOf(), false) {
-    fun buildPath(): String {
-      val pathMap = mutableMapOf<String, String>()
-      val queryMap = mutableMapOf<String, String?>()
-      return super.buildPath(pathMap, queryMap)
-    }
-  }
+  data object SettingsScreen : SettingsGraph()
+
 }

@@ -1,19 +1,15 @@
 package it.ipzs.home
 
-import it.ipzs.utils.BaseDestination
-import kotlin.Array
-import kotlin.Boolean
-import kotlin.String
+import it.ipzs.utils.navigation.BaseDestination
 
-public sealed class HomeGraph(
-  paths: Array<out String>,
-  queryParams: Array<out String>,
-  dynamicTitle: Boolean,
+sealed class HomeGraph(
+  paths: List<String> = listOf(),
+  queryParams: List<String> = listOf(),
+  dynamicTitle: Boolean = false,
 ) : BaseDestination(paths, queryParams, dynamicTitle) {
-  public companion object {
-    public val graphRoute: String = "homegraph"
+  companion object {
 
-    public fun fromPath(path: String): BaseDestination? {
+    fun fromPath(path: String): BaseDestination? {
       val name = if(path.contains("/")) {
         path.split("/").first()
       }
@@ -28,11 +24,5 @@ public sealed class HomeGraph(
     }
   }
 
-  public object HomeScreen : HomeGraph(arrayOf(), arrayOf(), false) {
-    public fun buildPath(): String {
-      val pathMap = mutableMapOf<String, String>()
-      val queryMap = mutableMapOf<String, String?>()
-      return super.buildPath(pathMap, queryMap)
-    }
-  }
+  data object HomeScreen : HomeGraph()
 }
