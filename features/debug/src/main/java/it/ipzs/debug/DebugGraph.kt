@@ -1,5 +1,6 @@
 package it.ipzs.debug
 
+import androidx.annotation.Keep
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigation
@@ -13,7 +14,8 @@ import it.ipzs.debug.list.data.DebugViewModel
 import it.ipzs.debug.list.ui.DebugScreen
 import it.ipzs.utils.navigation.BaseDestination
 
-sealed class DebugGraph(
+@Keep
+abstract class DebugGraph(
     paths: List<String> = listOf(),
     queryParams: List<String> = listOf(),
     dynamicTitle: Boolean = false,
@@ -37,6 +39,7 @@ sealed class DebugGraph(
         }
     }
 
+    @Keep
     data object DebugDetailScreen : DebugGraph(paths = listOf("itemId"), dynamicTitle = true) {
         const val KEY_ITEM_ID: String = "itemId"
 
@@ -48,6 +51,7 @@ sealed class DebugGraph(
         }
     }
 
+    @Keep
     data object DebugScreen : DebugGraph()
 }
 

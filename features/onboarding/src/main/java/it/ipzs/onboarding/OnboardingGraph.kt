@@ -1,8 +1,10 @@
 package it.ipzs.onboarding
 
+import androidx.annotation.Keep
 import it.ipzs.utils.navigation.BaseDestination
 
-sealed class OnboardingGraph(
+@Keep
+abstract class OnboardingGraph(
   paths: List<String> = listOf(),
   queryParams: List<String> = listOf(),
   dynamicTitle: Boolean = false,
@@ -24,5 +26,6 @@ sealed class OnboardingGraph(
     }
   }
 
+  @Keep
   data object OnboardingScreen : OnboardingGraph()
 }

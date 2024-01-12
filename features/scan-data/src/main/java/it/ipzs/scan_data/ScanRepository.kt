@@ -36,7 +36,7 @@ class ScanRepository @Inject constructor(
         withContext(Dispatchers.IO){
 
             timerJob = launch {
-                delay(2.seconds)
+                delay(30.seconds)
                 transferManager.stopVerification()
                 onError()
             }
@@ -62,7 +62,6 @@ class ScanRepository @Inject constructor(
                             }
 
                             TransferStatus.TERMINATED -> {
-
                                 transferManager.parseResult()?.let {
                                     lastDriveLicenseScanned = it
                                     onDocumentReceived()

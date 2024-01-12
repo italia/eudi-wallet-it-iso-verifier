@@ -45,9 +45,6 @@ class ApplicationPlugin : Plugin<Project>{
 
                 buildTypes {
                     release {
-
-                        print("flavor is -> ${target.getFlavorName()}")
-
                         isMinifyEnabled = target.getFlavorName() == FLAVOR_PROD
                         proguardFiles(
                             getDefaultProguardFile("proguard-android-optimize.txt"),

@@ -1,14 +1,16 @@
 package it.ipzs.utils.navigation
 
+import androidx.annotation.Keep
 import java.net.URLEncoder
 
+@Keep
 abstract class BaseDestination(
     private val paths: List<String>,
     private val queryParams: List<String>,
     val dynamicTitle: Boolean
 ) {
 
-    protected val name: String = this::class.simpleName ?: throw IllegalStateException()
+    private val name: String = this::class.simpleName ?: throw IllegalStateException()
 
     fun route(): String {
         val route = StringBuilder(name)

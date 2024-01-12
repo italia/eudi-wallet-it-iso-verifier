@@ -1,8 +1,10 @@
 package it.ipzs.settings
 
+import androidx.annotation.Keep
 import it.ipzs.utils.navigation.BaseDestination
 
-sealed class SettingsGraph(
+@Keep
+abstract class SettingsGraph(
   paths: List<String> = listOf(),
   queryParams: List<String> = listOf(),
   dynamicTitle: Boolean = false,
@@ -23,6 +25,7 @@ sealed class SettingsGraph(
     }
   }
 
+  @Keep
   data object SettingsScreen : SettingsGraph()
 
 }

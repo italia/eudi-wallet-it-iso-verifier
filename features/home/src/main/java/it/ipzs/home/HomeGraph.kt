@@ -1,8 +1,10 @@
 package it.ipzs.home
 
+import androidx.annotation.Keep
 import it.ipzs.utils.navigation.BaseDestination
 
-sealed class HomeGraph(
+@Keep
+abstract class HomeGraph(
   paths: List<String> = listOf(),
   queryParams: List<String> = listOf(),
   dynamicTitle: Boolean = false,
@@ -24,5 +26,6 @@ sealed class HomeGraph(
     }
   }
 
+  @Keep
   data object HomeScreen : HomeGraph()
 }

@@ -1,5 +1,6 @@
 package it.ipzs.scan
 
+import androidx.annotation.Keep
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -48,7 +49,8 @@ import it.ipzs.utils.navigation.BaseDestination
 import it.ipzs.utils.navigation.navigateAndPop
 import it.ipzs.utils.resourceToAnnotatedString
 
-sealed class ScanFlowGraph(
+@Keep
+abstract class ScanFlowGraph(
     paths: List<String> = listOf(),
     queryParams: List<String> = listOf(),
     dynamicTitle: Boolean = false,
@@ -79,16 +81,22 @@ sealed class ScanFlowGraph(
         }
     }
 
+    @Keep
     data object DetailScreen : ScanFlowGraph()
 
+    @Keep
     data object DriveLicenseScreen : ScanFlowGraph()
 
+    @Keep
     data object ErrorScreen : ScanFlowGraph()
 
+    @Keep
     data object PictureDialog : ScanFlowGraph()
 
+    @Keep
     data object ScanScreen : ScanFlowGraph()
 
+    @Keep
     data object ValidationScreen : ScanFlowGraph(listOf("barcode")) {
         const val KEY_BARCODE: String = "barcode"
 

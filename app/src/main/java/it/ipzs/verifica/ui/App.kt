@@ -22,15 +22,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
-import it.ipzs.verifica.utils.AppGraphResolver
 import it.ipzs.architecture.injection.contentVM
 import it.ipzs.scan.ScanFlowGraph
+import it.ipzs.theme.AppTheme
+import it.ipzs.utils.navigation.BaseDestination
 import it.ipzs.verifica.data.MainState
 import it.ipzs.verifica.data.MainViewModel
 import it.ipzs.verifica.data.PermissionScreensStatus
+import it.ipzs.verifica.utils.AppGraphResolver
 import it.ipzs.verifica.utils.DestinationResolver
-import it.ipzs.theme.AppTheme
-import it.ipzs.utils.navigation.BaseDestination
 import java.net.URLDecoder
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -50,6 +50,7 @@ fun App(
             val currentEntry by navController.currentBackStackEntryAsState()
             val currentRoute = currentEntry?.destination?.route ?: ""
             val currentDestination = AppGraphResolver.resolve(currentRoute)
+
             val customTitle = if(currentDestination?.dynamicTitle == true)
                 URLDecoder.decode(currentEntry?.arguments?.getString(BaseDestination.ANDROID_TITLE), "UTF-8")
             else null

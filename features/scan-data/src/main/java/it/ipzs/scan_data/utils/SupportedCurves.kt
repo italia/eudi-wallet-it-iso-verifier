@@ -1,5 +1,8 @@
 package it.ipzs.scan_data.utils
 
+import androidx.annotation.Keep
+
+@Keep
 enum class SupportedCurves {
     SECP256R1,
     SECP384R1,
