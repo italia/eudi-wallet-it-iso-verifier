@@ -30,7 +30,7 @@ class ScanRepository @Inject constructor(
         onDocumentReceived: () -> Unit,
         onError: () -> Unit
     ){
-        transferManager.stopVerification()
+
         transferManager.setQrDeviceEngagement(qr)
 
         withContext(Dispatchers.IO){
