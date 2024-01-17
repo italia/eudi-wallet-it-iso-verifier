@@ -12,7 +12,7 @@ import it.ipzs.scan.ScanFlowGraph
 import it.ipzs.settings.SettingsGraph
 import it.ipzs.verifica.R
 import it.ipzs.theme.component.AppBarSpecs
-import it.ipzs.utils.BaseDestination
+import it.ipzs.utils.navigation.BaseDestination
 
 object DestinationResolver {
 

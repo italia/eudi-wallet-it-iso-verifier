@@ -32,7 +32,7 @@ import it.ipzs.scan.scanGraph
 import it.ipzs.settings.SettingSpecs
 import it.ipzs.settings.SettingsScreen
 import it.ipzs.utils.DoNothing
-import it.ipzs.utils.navigateAndPop
+import it.ipzs.utils.navigation.navigateAndPop
 
 @OptIn(
     ExperimentalLayoutApi::class
