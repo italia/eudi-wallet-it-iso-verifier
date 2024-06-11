@@ -1,85 +1,132 @@
 package it.ipzs.scan_data
 
 import android.util.Log
-import it.ipzs.scan_data.managers.TransferManager
+import it.ipzs.network.repository.CheckCertificateRepository
+import it.ipzs.network.util.NetworkResponse
+import it.ipzs.preferences.PreferencesRepository
 import it.ipzs.scan_data.model.DriveLicenseData
+import it.ipzs.scan_data.managers.TransferManager
 import it.ipzs.scan_data.utils.TransferStatus
+import it.ipzs.scan_data.utils.certificate.KeysAndCertificates
 import it.ipzs.utils.DoNothing
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.time.Duration.Companion.seconds
 
 @Singleton
 class ScanRepository @Inject constructor(
-    private val transferManager: TransferManager
+    private val transferManager: TransferManager,
+    private val checkCertificateRepository: CheckCertificateRepository,
+    private val preferencesRepository: PreferencesRepository
 ) {
 
     val canSetName = transferManager.canSetName
 
     var lastDriveLicenseScanned: DriveLicenseData? = null
 
-    private var timerJob: Job? = null
-
     suspend fun setQrDeviceEngagement(
         qr: String,
         onDocumentReceived: () -> Unit,
-        onError: () -> Unit
+        onError: () -> Unit,
+        onCertificateNotValid: () -> Unit
     ){
 
         transferManager.setQrDeviceEngagement(qr)
 
-        withContext(Dispatchers.IO){
+        try {
+            transferManager
+                .getTransferStatus()
+                .collect{
 
-            timerJob = launch {
-                delay(30.seconds)
-                transferManager.stopVerification()
-                onError()
-            }
+                    Log.d("test_status", it.name)
 
-            launch {
+                    when (it) {
+                        TransferStatus.READER_ENGAGEMENT_READY -> {
 
-                transferManager
-                    .getTransferStatus()
-                    .collect{
-
-                        Log.d("test_status", it.name)
-
-                        when(it){
-                            TransferStatus.IDLE,
-                            TransferStatus.READER_ENGAGEMENT_READY -> DoNothing
-
-                            TransferStatus.ENGAGED -> {
-                                transferManager.connect()
-                            }
-
-                            TransferStatus.CONNECTED -> {
-                                transferManager.sendRequest()
-                            }
-
-                            TransferStatus.TERMINATED -> {
-                                transferManager.parseResult()?.let {
-                                    lastDriveLicenseScanned = it
-                                    onDocumentReceived()
-                                } ?: onError()
-
-                                transferManager.stopVerification()
-                                timerJob?.cancel()
-                            }
                         }
 
+                        TransferStatus.ENGAGED -> {
+                            transferManager.connect()
+                        }
+
+                        TransferStatus.CONNECTED -> {
+                            transferManager.sendRequest()
+                        }
+
+                        TransferStatus.RESPONSE -> {
+
+                            val result = transferManager.parseResult()
+
+                            lastDriveLicenseScanned = result
+
+                            val isCertificateValid =  checkCertificateValidity(result?.serialNumberCertificate?.toLong())
+                            if (!isCertificateValid) {
+                                onCertificateNotValid()
+                                return@collect
+                            }
+
+                            if (lastDriveLicenseScanned != null) {
+                                transferManager.stopVerification(true, true)
+                                onDocumentReceived()
+                            }
+                        }
+                        TransferStatus.DISCONNECTED -> {
+                            if (!transferManager.hasDocuments())
+                                onError()
+                        }
+
+                        TransferStatus.ERROR -> {
+
+                            try {
+
+                                val result = transferManager.parseResult()
+
+                                lastDriveLicenseScanned = result
+
+                                if(lastDriveLicenseScanned != null){
+                                    transferManager.stopVerification(true, true)
+                                    onDocumentReceived()
+                                } else onError()
+
+                            } catch (e: Exception){
+                                e.printStackTrace()
+                                onError()
+                            }
+
+                        }
+                        TransferStatus.IDLE -> DoNothing
                     }
+                }
 
-
-            }
-
+        } finally {
+            transferManager.stopVerification(true, true)
         }
+    }
+    private suspend fun checkCertificateValidity(serialNumber : Long?): Boolean{
+        serialNumber?.let {
+            val resp = checkCertificateRepository.getOCSPBySerialNumber(serialNumber)
+            when(resp){
+                is NetworkResponse.Success -> {
+                    var isCertificateValid = !resp.data!!.isRevoked
+                    return isCertificateValid
+                }
+                else -> {
+                    return isCertifcateValidByCRL(serialNumber)
+                }
+            }
+        }
+        return false
+    }
+
+   suspend fun isCertifcateValidByCRL(serialNumber: Long?) : Boolean{
+       serialNumber?.let {
+           var crlStringFromStorage = preferencesRepository.getCrlCertificateString() ?:""
+           val x509CRL = KeysAndCertificates.parseCRL(crlStringFromStorage)
+           val isCertificateValid = x509CRL?.getRevokedCertificate(serialNumber.toBigInteger()) == null
+           return isCertificateValid
+       } ?: return false
 
     }
+
 
     fun setCustomName(customName: String){
         transferManager.setCustomName(customName)

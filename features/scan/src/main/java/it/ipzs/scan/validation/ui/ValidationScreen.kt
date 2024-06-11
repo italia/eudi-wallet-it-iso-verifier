@@ -11,10 +11,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import it.simonecascino.destinationbuilder.annotations.Destination
 import it.ipzs.scan.R
 import it.ipzs.theme.component.AppProgressDots
 import it.ipzs.theme.specs.ThemeSpecs
 
+@Destination(
+    graphName = "ScanFlowGraph",
+    paths = ["barcode"]
+)
 @Composable
 fun ValidationScreen(
     modifier: Modifier = Modifier
@@ -51,4 +57,10 @@ fun ValidationScreen(
 
     }
 
+}
+
+@Preview
+@Composable
+fun ValidationScreenPreview(){
+    ValidationScreen()
 }

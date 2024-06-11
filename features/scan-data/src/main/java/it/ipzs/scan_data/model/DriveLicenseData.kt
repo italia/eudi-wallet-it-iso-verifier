@@ -20,7 +20,8 @@ data class DriveLicenseData(
     val documentNumber: String? = null,
     val address: String? = null,
     val types: List<String>? = null,
-    val photo: Bitmap? = null
+    val photo: Bitmap? = null,
+    val serialNumberCertificate: String? = null
 ){
 
     val parsedReleaseDate = try{
@@ -71,7 +72,8 @@ data class DriveLicenseData(
 
         fun fromDocumentHandler(
             documentHandler: DocumentHandler,
-            isValidOnDates: Boolean
+            isValidOnDates: Boolean,
+            serialNumberCertificate: String
         ) = DriveLicenseData(
             isValidOnDates = isValidOnDates,
             name = documentHandler.getName(),
@@ -84,7 +86,8 @@ data class DriveLicenseData(
             issuer = documentHandler.getIssuingAuthority(),
             documentNumber = documentHandler.getDocumentNumber(),
             types = documentHandler.getTypes(),
-            photo = documentHandler.portrait
+            photo = documentHandler.portrait,
+            serialNumberCertificate = serialNumberCertificate
         )
     }
 

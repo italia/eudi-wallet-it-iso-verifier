@@ -1,6 +1,5 @@
 package it.ipzs.scan
 
-import androidx.annotation.Keep
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
@@ -21,6 +20,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import it.ipzs.scan.R
+import it.simonecascino.destination.ScanFlowGraph
 import it.ipzs.architecture.injection.composableVM
 import it.ipzs.architecture.injection.dialogVM
 import it.ipzs.architecture.viewmodel.NoEvents
@@ -32,6 +33,7 @@ import it.ipzs.scan.drivelicense.data.DriveLicenseState
 import it.ipzs.scan.drivelicense.data.DriveLicenseViewModel
 import it.ipzs.scan.drivelicense.ui.DriveLicenseScreen
 import it.ipzs.scan.error.ErrorScreen
+import it.ipzs.scan.invalidcertificate.InvalidCertificateScreen
 import it.ipzs.scan.picture.data.PictureState
 import it.ipzs.scan.picture.data.PictureViewModel
 import it.ipzs.scan.picture.ui.PictureDialog
@@ -45,69 +47,8 @@ import it.ipzs.scan.validation.ui.ValidationScreen
 import it.ipzs.theme.component.AppDialog
 import it.ipzs.theme.component.ButtonsSpecs
 import it.ipzs.theme.specs.ThemeSpecs
-import it.ipzs.utils.navigation.BaseDestination
-import it.ipzs.utils.navigation.navigateAndPop
+import it.ipzs.utils.navigateAndPop
 import it.ipzs.utils.resourceToAnnotatedString
-
-@Keep
-abstract class ScanFlowGraph(
-    paths: List<String> = listOf(),
-    queryParams: List<String> = listOf(),
-    dynamicTitle: Boolean = false,
-) : BaseDestination(paths, queryParams, dynamicTitle) {
-    companion object {
-
-        const val graphRoute: String = "scanflowgraph"
-
-        fun fromPath(path: String): BaseDestination? {
-
-            val name = if(path.contains("/")) {
-                path.split("/").first()
-            }
-            else if (path.contains("?")) {
-                path.split("?").first()
-            }
-            else path
-
-            return when(name){
-                "DetailScreen" -> DetailScreen
-                "DriveLicenseScreen" -> DriveLicenseScreen
-                "ErrorScreen" -> ErrorScreen
-                "PictureDialog" -> PictureDialog
-                "ScanScreen" -> ScanScreen
-                "ValidationScreen" -> ValidationScreen
-                else -> null
-            }
-        }
-    }
-
-    @Keep
-    data object DetailScreen : ScanFlowGraph()
-
-    @Keep
-    data object DriveLicenseScreen : ScanFlowGraph()
-
-    @Keep
-    data object ErrorScreen : ScanFlowGraph()
-
-    @Keep
-    data object PictureDialog : ScanFlowGraph()
-
-    @Keep
-    data object ScanScreen : ScanFlowGraph()
-
-    @Keep
-    data object ValidationScreen : ScanFlowGraph(listOf("barcode")) {
-        const val KEY_BARCODE: String = "barcode"
-
-        fun buildPath(barcode: String): String {
-            val pathMap = mutableMapOf<String, String>()
-            pathMap["barcode"] = barcode
-            return super.buildPath(pathMap, mapOf())
-        }
-    }
-}
-
 
 fun NavGraphBuilder.scanGraph(
     navController: NavHostController,
@@ -208,6 +149,12 @@ fun NavGraphBuilder.scanGraph(
                         popTo = ScanFlowGraph.ScanScreen.route(),
                         inclusive = false
                     )
+
+                    ValidationEvent.OnCertificateNotValid -> navController.navigateAndPop(
+                        to = ScanFlowGraph.InvalidCertificateScreen.buildPath(),
+                        popTo = ScanFlowGraph.ScanScreen.route(),
+                        inclusive = false
+                    )
                 }
             }
         ){
@@ -267,6 +214,20 @@ fun NavGraphBuilder.scanGraph(
         ){
 
             ErrorScreen{
+                navController.popBackStack(
+                    route = ScanFlowGraph.ScanScreen.route(),
+                    inclusive = false
+                )
+            }
+
+        }
+
+
+        composable(
+            route = ScanFlowGraph.InvalidCertificateScreen.route()
+        ){
+
+            InvalidCertificateScreen{
                 navController.popBackStack(
                     route = ScanFlowGraph.ScanScreen.route(),
                     inclusive = false

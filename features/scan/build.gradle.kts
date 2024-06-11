@@ -2,6 +2,7 @@ plugins {
     id("androidLib")
     id("composeLib")
     id("hilt")
+    id("ksp")
 }
 dependencies {
     implementation(project(":core:utils"))
@@ -13,4 +14,6 @@ dependencies {
     implementation(libs.compose.constraintlayout)
     implementation(libs.bundles.camera)
     implementation(libs.barcode)
+    implementation(libs.destination.builder)
+    ksp(libs.destination.builder)
 }

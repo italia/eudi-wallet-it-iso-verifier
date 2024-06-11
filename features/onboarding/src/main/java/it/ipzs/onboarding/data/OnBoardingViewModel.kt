@@ -1,10 +1,12 @@
 package it.ipzs.onboarding.data
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import it.ipzs.architecture.viewmodel.BaseViewModel
 import it.ipzs.architecture.viewmodel.NoEvents
 import it.ipzs.architecture.viewmodel.NoState
+import it.ipzs.network.repository.CheckCertificateRepository
 import it.ipzs.preferences.PreferencesRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject

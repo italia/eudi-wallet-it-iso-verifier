@@ -1,6 +1,5 @@
 package it.ipzs.verifica.ui
 
-import android.widget.Toast
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
@@ -11,8 +10,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import it.ipzs.onboarding.OnboardingGraph
-import it.ipzs.settings.SettingsGraph
+import it.simonecascino.destination.OnboardingGraph
+import it.simonecascino.destination.SettingsGraph
 import it.ipzs.verifica.data.MainState
 import it.ipzs.verifica.utils.DestinationResolver
 import it.ipzs.preferences.DatastorePrefResult

@@ -4,6 +4,7 @@ import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.icu.util.GregorianCalendar
 import android.icu.util.TimeZone
+import android.util.Log
 import co.nstant.`in`.cbor.CborDecoder
 import co.nstant.`in`.cbor.CborException
 import co.nstant.`in`.cbor.model.DataItem
@@ -43,6 +44,18 @@ import java.util.concurrent.Executors
 import javax.inject.Inject
 import javax.inject.Singleton
 
+private val authValues = listOf(
+    "0",
+    "SECP256R1",
+    "SECP384R1",
+    "SECP521R1",
+    "BRAINPOOLP256R1",
+    "BRAINPOOLP384R1",
+    "BRAINPOOLP512R1",
+    "ED25519",
+    "ED448"
+)
+
 @Singleton
 class TransferManager @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -51,15 +64,16 @@ class TransferManager @Inject constructor(
 
     val canSetName = logManager.canSetName()
 
-    private val authName = SupportedCurves.SECP256R1.name
+    //currently we are getting the first
+    private val authName = authValues.first()
 
     private var mdocConnectionMethod: ConnectionMethod? = null
 
     private var hasStarted = false
 
+
     var responseBytes: ByteArray? = null
         private set
-
     private var verification: VerificationHelper? = null
 
 
@@ -118,11 +132,14 @@ class TransferManager @Inject constructor(
         }
     }
 
-    fun stopVerification() {
+    fun stopVerification(
+        sendSessionTerminationMessage: Boolean,
+        useTransportSpecificSessionTermination: Boolean
+    ) {
 
-        verification?.setSendSessionTerminationMessage(true)
+        verification?.setSendSessionTerminationMessage(sendSessionTerminationMessage)
         try {
-            if (verification?.isTransportSpecificTerminationSupported == true) {
+            if (verification?.isTransportSpecificTerminationSupported == true && useTransportSpecificSessionTermination) {
                 verification?.setUseTransportSpecificSessionTermination(true)
             }
         } catch (e: IllegalStateException) {
@@ -173,17 +190,17 @@ class TransferManager @Inject constructor(
         override fun onResponseReceived(deviceResponseBytes: ByteArray) {
             logManager.logResponse()
             responseBytes = deviceResponseBytes
-            transferStatusLd.value = TransferStatus.TERMINATED
+            transferStatusLd.value = TransferStatus.RESPONSE
         }
 
         override fun onDeviceDisconnected(transportSpecificTermination: Boolean) {
             logManager.logDeviceDisconnected(transportSpecificTermination)
-            transferStatusLd.value = TransferStatus.TERMINATED
+            transferStatusLd.value = TransferStatus.DISCONNECTED
         }
 
         override fun onError(error: Throwable) {
             logManager.logError(error)
-            transferStatusLd.value = TransferStatus.TERMINATED
+            transferStatusLd.value = TransferStatus.ERROR
         }
     }
 
@@ -316,6 +333,13 @@ class TransferManager @Inject constructor(
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    fun hasDocuments() = try {
+        getDeviceResponse().documents.isNotEmpty()
+    } catch(e: Exception) {
+        logManager.logError(e)
+        false
+    }
+
     suspend fun parseResult(): DriveLicenseData? {
 
         return withContext(Dispatchers.IO) {
@@ -332,6 +356,9 @@ class TransferManager @Inject constructor(
 
                     val certPath =
                         simpleIssuerTrustStore.createCertificationTrustPath(doc.issuerCertificateChain.toList())
+
+                    // leaf certificate serial number
+                    val serialNumberCertificate = doc.issuerCertificateChain.first().serialNumber.toString()
                     val certChain = if (certPath?.isNotEmpty() == true) {
                         certPath
                     } else {
@@ -455,12 +482,13 @@ class TransferManager @Inject constructor(
                         }
                     }
                     logManager.logReceived(info.toString())
-                    DriveLicenseData.fromDocumentHandler(documentHandler, isValidOnDates)
+                    DriveLicenseData.fromDocumentHandler(documentHandler, isValidOnDates,serialNumberCertificate)
                 }
 
 
             } catch (e: Exception){
                 logManager.logError(e)
+                transferStatusLd.value = TransferStatus.ERROR
                 null
             }
 

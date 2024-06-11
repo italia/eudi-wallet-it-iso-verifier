@@ -4,6 +4,8 @@ enum class TransferStatus {
     READER_ENGAGEMENT_READY,
     ENGAGED,
     CONNECTED,
-    TERMINATED,
+    RESPONSE,
+    DISCONNECTED,
+    ERROR,
     IDLE
 }

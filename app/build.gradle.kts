@@ -3,6 +3,7 @@ plugins {
     id("androidApp")
     id("composeApp")
     id("hilt")
+    id("ksp")
 }
 dependencies {
     implementation(project(":core:theme"))
@@ -15,5 +16,7 @@ dependencies {
     implementation(project(":features:scan"))
     implementation(project(":features:debug"))
     implementation(libs.accompanist.permissions)
+    implementation(libs.destination.builder)
+    ksp(libs.destination.builder)
 }
 true

@@ -14,7 +14,7 @@ class MainViewModel @Inject constructor(
     preferencesRepository: PreferencesRepository
 ): BaseViewModel<MainState, Nothing>(MainState()) {
 
-    private var job: Job? = null
+    private lateinit var job: Job
 
     init {
 
@@ -32,7 +32,7 @@ class MainViewModel @Inject constructor(
                     it is DatastorePrefResult.Fetched ||
                     it is DatastorePrefResult.Missing
                 ){
-                    job?.cancel()
+                    job.cancel()
                 }
             }
         }

@@ -19,7 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--dontwarn java.lang.invoke.StringConcatFactory
+-keep public class * extends it.simonecascino.destinationbuilder.base.BaseDestination
 -dontwarn com.fasterxml.jackson.dataformat.xml.JacksonXmlModule
 -dontwarn com.fasterxml.jackson.dataformat.xml.XmlMapper
 -dontwarn com.sun.org.apache.xml.internal.utils.PrefixResolver
@@ -103,6 +103,3 @@
 -dontwarn org.zeroturnaround.javarebel.ClassEventListener
 -dontwarn org.zeroturnaround.javarebel.Reloader
 -dontwarn org.zeroturnaround.javarebel.ReloaderFactory
--keep class org.bouncycastle.** { *; }
--keep class java.security.** { *; }
--keep class sun.security.** { *; }

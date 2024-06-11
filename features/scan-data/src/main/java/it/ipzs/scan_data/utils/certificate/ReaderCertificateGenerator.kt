@@ -20,6 +20,7 @@ import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.bouncycastle.operator.OperatorCreationException
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder
+import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.io.InputStream
 import java.math.BigInteger
@@ -31,8 +32,10 @@ import java.security.KeyPairGenerator
 import java.security.NoSuchAlgorithmException
 import java.security.PrivateKey
 import java.security.PublicKey
+import java.security.Security
 import java.security.cert.CertificateException
 import java.security.cert.CertificateFactory
+import java.security.cert.X509CRL
 import java.security.cert.X509Certificate
 import java.security.spec.ECGenParameterSpec
 import java.security.spec.PKCS8EncodedKeySpec
@@ -238,6 +241,59 @@ object KeysAndCertificates {
         val spec = PKCS8EncodedKeySpec(keyBytes)
         val kf = KeyFactory.getInstance("EC")
         return kf.generatePrivate(spec)
+    }
+    fun parseCRL(crlString: String): X509CRL? {
+        // Aggiungi il provider Bouncy Castle
+        Security.addProvider(BouncyCastleProvider())
+
+        return try {
+            // Rimuovi le intestazioni e le codifiche Base64
+            val crlBase64 = crlString.replace("-----BEGIN X509 CRL-----", "")
+                .replace("-----END X509 CRL-----", "")
+                .replace("\\s".toRegex(), "")
+
+            // Decodifica Base64
+            val crlBytes = Base64.getDecoder().decode(crlBase64)
+
+            // Crea un'istanza di CertificateFactory per parsare la CRL
+            val certificateFactory = CertificateFactory.getInstance("X.509")
+
+            // Parsare la CRL
+            certificateFactory.generateCRL(crlBytes.inputStream()) as X509CRL
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun convertPEMToX509Certificate(pemString : String?) : X509Certificate? {
+        val certString = pemString
+
+        try {
+            val cert = convertStringToX509Certificate(certString)
+            println("Issuer: ${cert?.issuerDN}")
+            println("Subject: ${cert?.subjectDN}")
+            return cert
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
+    private fun convertStringToX509Certificate(certString: String?): X509Certificate? {
+        certString?.let {
+            val cleanCert = it
+                .replace("-----BEGIN CERTIFICATE-----", "")
+                .replace("-----END CERTIFICATE-----", "")
+                .replace("\\s".toRegex(), "")
+
+            val certBytes = Base64.getDecoder().decode(cleanCert)
+            val certInputStream = ByteArrayInputStream(certBytes)
+
+            val certificateFactory = CertificateFactory.getInstance("X.509")
+            return certificateFactory.generateCertificate(certInputStream) as X509Certificate
+        }
+        return null
     }
 
     private fun getCertificate(context: Context, resourceId: Int): X509Certificate {

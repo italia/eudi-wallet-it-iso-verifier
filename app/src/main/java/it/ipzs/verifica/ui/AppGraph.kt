@@ -17,25 +17,37 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import it.ipzs.home.HomeGraph
-import it.ipzs.onboarding.OnboardingGraph
-import it.ipzs.settings.SettingsGraph
+import it.simonecascino.destination.DebugGraph
+import it.simonecascino.destination.HomeGraph
+import it.simonecascino.destination.OnboardingGraph
+import it.simonecascino.destination.ScanFlowGraph
+import it.simonecascino.destination.SettingsGraph
+import it.simonecascino.destinationbuilder.annotations.Graph
 import it.ipzs.architecture.injection.composableVM
 import it.ipzs.architecture.viewmodel.NoEvents
 import it.ipzs.architecture.viewmodel.NoState
-import it.ipzs.debug.DebugGraph
 import it.ipzs.debug.debugGraph
 import it.ipzs.home.HomeScreen
+import it.ipzs.home.HomeViewModel
 import it.ipzs.onboarding.data.OnBoardingViewModel
 import it.ipzs.onboarding.ui.OnboardingScreen
 import it.ipzs.scan.scanGraph
 import it.ipzs.settings.SettingSpecs
 import it.ipzs.settings.SettingsScreen
 import it.ipzs.utils.DoNothing
-import it.ipzs.utils.navigation.navigateAndPop
+import it.ipzs.utils.navigateAndPop
 
 @OptIn(
     ExperimentalLayoutApi::class
+)
+@Graph(
+    graphs = [
+        HomeGraph::class,
+        ScanFlowGraph::class,
+        SettingsGraph::class,
+        OnboardingGraph::class,
+        DebugGraph::class
+    ]
 )
 @Composable
 fun AppGraph(
@@ -78,7 +90,7 @@ fun AppGraph(
             }
         }
 
-        composable(
+        composableVM<NoState,NoEvents, HomeViewModel>(
             route = HomeGraph.HomeScreen.route(),
             enterTransition = {
 
